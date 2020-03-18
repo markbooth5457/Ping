@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D8993D224122C920053000E /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8993D124122C920053000E /* Ball.swift */; };
 		5DEBD35423E6C9A100BD600D /* Ping WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5DEBD35323E6C9A100BD600D /* Ping WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5DEBD35A23E6C9A100BD600D /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DEBD35823E6C9A100BD600D /* Interface.storyboard */; };
 		5DEBD35C23E6C9A400BD600D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DEBD35B23E6C9A400BD600D /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 		5DEBD36C23E6C9A400BD600D /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBD36B23E6C9A400BD600D /* ExtensionDelegate.swift */; };
 		5DEBD36E23E6C9A500BD600D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DEBD36D23E6C9A500BD600D /* Assets.xcassets */; };
 		5DEBD37123E6C9A500BD600D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DEBD37023E6C9A500BD600D /* Preview Assets.xcassets */; };
+		5DEBD38123E6D84E00BD600D /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBD38023E6D84E00BD600D /* Arc.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5D8993D124122C920053000E /* Ball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
 		5DEBD34F23E6C9A100BD600D /* Ping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DEBD35323E6C9A100BD600D /* Ping WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ping WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DEBD35923E6C9A100BD600D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		5DEBD36D23E6C9A500BD600D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5DEBD37023E6C9A500BD600D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5DEBD37223E6C9A500BD600D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DEBD38023E6D84E00BD600D /* Arc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arc.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,8 @@
 			isa = PBXGroup;
 			children = (
 				5DEBD36723E6C9A400BD600D /* ContentView.swift */,
+				5D8993D124122C920053000E /* Ball.swift */,
+				5DEBD38023E6D84E00BD600D /* Arc.swift */,
 				5DEBD36923E6C9A400BD600D /* HostingController.swift */,
 				5DEBD36B23E6C9A400BD600D /* ExtensionDelegate.swift */,
 				5DEBD36D23E6C9A500BD600D /* Assets.xcassets */,
@@ -266,6 +272,8 @@
 			files = (
 				5DEBD36A23E6C9A400BD600D /* HostingController.swift in Sources */,
 				5DEBD36823E6C9A400BD600D /* ContentView.swift in Sources */,
+				5DEBD38123E6D84E00BD600D /* Arc.swift in Sources */,
+				5D8993D224122C920053000E /* Ball.swift in Sources */,
 				5DEBD36C23E6C9A400BD600D /* ExtensionDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
