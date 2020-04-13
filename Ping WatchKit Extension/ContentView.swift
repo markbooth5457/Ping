@@ -13,7 +13,6 @@ class State: ObservableObject {
     enum RunState : String {
         case ready = "Ready"
         case running = "Running"
-        case paused = "Paused"
         case ended = "Ended"
     }
     @Published var paddlePosition = 0.0
@@ -27,7 +26,7 @@ class State: ObservableObject {
     var runState = RunState.ready
     var radius : CGFloat = 1.0
     var circleCentre = CGPoint(x: 0, y: 0)
-    var transitTime = 2.0
+    var transitTime = 5.5
     var ballAngle = 0.0 // in: 0.0 ..< (2 * .pi)
     
     var collides : Bool {
@@ -45,17 +44,22 @@ class State: ObservableObject {
         circleCentre = CGPoint(x: geometry.frame(in: .local).midX ,y: geometry.frame(in: .local).midY )
     }
     
-    func edgePosFromAngle(angle: Double) -> CGPoint{
-        ballAngle = angle // in: 0.0 ..< (2 * .pi)
-        return CGPoint(x: self.circleCentre.x + (CGFloat(cos(angle)) * self.radius) ,
-                       y: self.circleCentre.y + (CGFloat(sin(angle)) * self.radius))
+    func edgePosFromAngle(_ angle: Double) -> CGPoint{
+        self.ballAngle = angle // in: 0.0 ..< (2 * .pi)
+        return CGPoint(x: self.circleCentre.x + (CGFloat(cos(angle)) * (self.radius - 5.0)) ,
+                       y: self.circleCentre.y + (CGFloat(sin(angle)) * (self.radius - 5.0)))
+    }
+    func antipodeFromAngle(_ angle: Double) -> Double{
+        return angle > Double.pi ? angle - Double.pi : angle + Double.pi
     }
     func reschedule() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + transitTime, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.transitTime, execute: {
             if self.collides {
                 self.score += 1
                 self.transitTime -= 0.01
-                self.ballPosition = self.edgePosFromAngle(angle: abs(self.ballAngle - Double.pi))
+                let jitter = (Double.pi / 60) * Double.random(in: 0 ..< 2) // 0 ..< 6 degrees
+                self.ballAngle = self.antipodeFromAngle(self.ballAngle + jitter)
+                self.ballPosition = self.edgePosFromAngle(self.ballAngle)
                 self.reschedule()
             } else {
                 self.score = 0
@@ -74,11 +78,11 @@ class ReadySetGo: ObservableObject {
     init() {
 
     }
-    func runRSG() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {self.rsg = "Ready"})
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {self.rsg = "Set"})
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {self.rsg = "Go"})
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5, execute: {
+    func runRSG(seconds: Double) {
+        DispatchQueue.main.asyncAfter(deadline: .now() +  seconds / 3 , execute: {self.rsg = "Ready"})
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds * 2 / 3 , execute: {self.rsg = "Set"})
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: {self.rsg = "Go"})
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds + 0.5, execute: {
             self.rsg = ""
         })
     }
@@ -91,43 +95,35 @@ struct ContentView: View {
     
     fileprivate func doTap() {
         let dir = Double.random(in: 0.0 ..< (2 * .pi) )
-        let newPos = state.edgePosFromAngle(angle:  dir)
+        let newPos = state.edgePosFromAngle(dir)
         switch state.runState {
         case .ready:
-            // countdown to get ready, set, go
-            
         // pick a random direction and find the pos on the edge to move towards
             state.runState = .running
             state.transitTime = 0
             state.ballPosition = state.circleCentre
-            state.transitTime = 2.0
-            rsg.runRSG()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5, execute: {
+            state.transitTime = 4.0
+            let rsgTime = 3.0
+            rsg.runRSG(seconds: rsgTime)
+            DispatchQueue.main.asyncAfter(deadline: .now() + rsgTime + state.transitTime, execute: {
                 self.state.ballPosition = newPos
                 self.state.reschedule()
             })
         case .running:
-            state.runState = .paused
-            let saved = state.transitTime
-            state.transitTime = 0
-            state.ballPosition = state.circleCentre
-            state.transitTime = saved
-        case .paused:
-            state.runState = .running
-            state.ballPosition = newPos
-        default:
-            state.ballPosition = state.circleCentre
+            state.runState = .ready
+        case .ended:
             state.runState = .ready
         }
     }
     var body: some View {
         ZStack {
             VStack {
-                Text(" \(self.state.score == 0 ? "Ready" : self.state.score.description )")
+                Text(" \(self.state.score)")
                 Text(rsg.rsg)
-                Text("paddle: \(self.state.paddlePosition)")
                 Text("\(self.state.runState.rawValue )")
-            }.opacity(0.5)
+                Text("\(self.state.ballAngle )")
+                Text("\(self.state.paddlePosition )")
+                }.opacity(0.5)
             ZStack{
                 GeometryReader { geometry in
                     Circle()
