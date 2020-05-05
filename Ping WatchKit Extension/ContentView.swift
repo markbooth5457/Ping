@@ -56,13 +56,12 @@ class State: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.transitTime, execute: {
             if self.collides {
                 self.score += 1
-                self.transitTime -= 0.01
+                self.transitTime -= 0.1
                 let jitter = (Double.pi / 60) * Double.random(in: 0 ..< 2) // 0 ..< 6 degrees
                 self.ballAngle = self.antipodeFromAngle(self.ballAngle + jitter)
                 self.ballPosition = self.edgePosFromAngle(self.ballAngle)
                 self.reschedule()
             } else {
-                self.score = 0
                 self.runState = .ended
             }
         })
@@ -121,8 +120,6 @@ struct ContentView: View {
                 Text(" \(self.state.score)")
                 Text(rsg.rsg)
                 Text("\(self.state.runState.rawValue )")
-                Text("\(self.state.ballAngle )")
-                Text("\(self.state.paddlePosition )")
                 }.opacity(0.5)
             ZStack{
                 GeometryReader { geometry in
